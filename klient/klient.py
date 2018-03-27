@@ -1,6 +1,6 @@
 import socket
 import sys
-#setting all needed variavles
+# Put your IP and port here
 TCP_IP = '127.0.0.1'
 TCP_PORT = 3001
 BUFFER_SIZE = 1024
