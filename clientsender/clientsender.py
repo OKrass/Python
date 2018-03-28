@@ -1,5 +1,5 @@
 import socket
-
+import sys
 import time
 import thread
 # Put your IP and port here
@@ -32,20 +32,21 @@ def sendData(data,t):
         else:
             print 'no more data to %s\nclosing '%(TCP_IP)
             s.close()
-            exit()
-            break
+            sys.exit(0)
+        break
 
 try:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     #COnnecting to server using IP and Port
     s.connect((TCP_IP, TCP_PORT))
+
     print 'connecting to %s' % (TCP_IP)
 
     # Set amount of time between sending data in s
-    thread.start_new_thread(sendData, (data, 5,))
+    thread.start_new_thread(sendData, (data, 1,))
 except:
     print "Error: unable to start thread"
-
+    sys.exit(1)
 while 1:
    pass
 
