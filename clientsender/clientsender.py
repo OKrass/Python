@@ -32,6 +32,7 @@ def sendData(data,t):
         else:
             print 'no more data to %s\nclosing '%(TCP_IP)
             s.close()
+            exit()
             break
 
 try:
