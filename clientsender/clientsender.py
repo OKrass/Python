@@ -5,9 +5,9 @@ import thread
 # Put your IP and port here
 TCP_IP = '127.0.0.1'
 TCP_PORT = 3001
-buffersize = 128
+buffersize = 256
 #Data which are going to be sent
-data = 'some data\t'
+data = 'some data'
 #Function to get data later
 def getData():
     data = 0
@@ -16,15 +16,27 @@ def getData():
 def sendData(data,t):
     gettime = t
     informationToSent = data
+    print('Started sending messages')
     while True:
+
         s.send(informationToSent)
+
         time.sleep(gettime)
         try:
             answer = s.recv(buffersize)
+            #Checking if sent information is same as recieved
+            if (answer != informationToSent):
+                print('messages do not match')
+                s.close()
+                sys.exit(0)
+
+
+
         except Exception:
             print('something went wrong')
+            s.close()
         #Getting new information
-        informationToSent = getData()
+        #informationToSent = getData()
 
 
         if informationToSent:
@@ -43,7 +55,7 @@ try:
     print 'connecting to %s' % (TCP_IP)
 
     # Set amount of time between sending data in s
-    thread.start_new_thread(sendData, (data, 1,))
+    thread.start_new_thread(sendData, (data, 5,))
 except:
     print "Error: unable to start thread"
     sys.exit(1)
