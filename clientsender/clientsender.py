@@ -6,8 +6,10 @@ import thread
 TCP_IP = '127.0.0.1'
 TCP_PORT = 3001
 buffersize = 256
+# Set amount of time between sending data in s
+timeBetweenTransmission = 2
 #Data which are going to be sent
-data = 'some data'
+data = 'SOME RATA'
 #Function to get data later
 def getData():
     data = 0
@@ -51,11 +53,8 @@ try:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     #COnnecting to server using IP and Port
     s.connect((TCP_IP, TCP_PORT))
-
     print 'connecting to %s' % (TCP_IP)
-
-    # Set amount of time between sending data in s
-    thread.start_new_thread(sendData, (data, 5,))
+    thread.start_new_thread(sendData, (data, timeBetweenTransmission,))
 except:
     print "Error: unable to start thread"
     sys.exit(1)
