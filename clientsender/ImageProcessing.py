@@ -1,11 +1,11 @@
 import numpy as np
 import cv2 as cv
-import multiprocessing
+import Queue
 import thread
 Blue = []
 Green = []
 Red = []
-q = multiprocessing.Queue()
+
 
 # Set Number of Frames between 50 - 350
 NumberOfFrames = 20
@@ -64,7 +64,7 @@ def DataToSend(BlueArray, GreenArray, RedArray, i):
         return temp1, 1, BlueFFT, GreenFFT, RedFFT
     else:
         BlueFFT, GreenFFT, RedFFT = ChannelFFT([0],[0],[0])
-        temp = [];
+        temp = []
         return temp, 0, BlueFFT, GreenFFT, RedFFT
 
 
@@ -76,33 +76,29 @@ def Meanof3channels(MeanOfblue, MeanOfgreen, MeanOfred):
 
 def PutAllDataInQueue(Queue,Color, New, Mean, BFFT, GFFT, RFFT):
 
-    Queue.put_nowait(Color[0])
-    Queue.put_nowait(Color[1])
-    Queue.put_nowait(Color[2])
-    Queue.put_nowait(New)
+    Queue.put(Color[0])
+    Queue.put(Color[1])
+    Queue.put(Color[2])
+    Queue.put(New)
     if not Mean:
-        Queue.put_nowait(0)
-        Queue.put_nowait(0)
-        Queue.put_nowait(0)
-        Queue.put_nowait(0)
+        Queue.put(0)
+        Queue.put(0)
+        Queue.put(0)
+        Queue.put(0)
     else:
-        Queue.put_nowait(Mean[0])
-        Queue.put_nowait(Mean[1])
-        Queue.put_nowait(Mean[2])
-        Queue.put_nowait(Mean[3])
-    Queue.put_nowait(BFFT)
-    Queue.put_nowait(GFFT)
-    Queue.put_nowait(RFFT)
+        Queue.put(Mean[0])
+        Queue.put(Mean[1])
+        Queue.put(Mean[2])
+        Queue.put(Mean[3])
+    Queue.put(BFFT)
+    Queue.put(GFFT)
+    Queue.put(RFFT)
     print Queue.qsize()
-
-    Queue.close()
-    Queue.join_thread()
-
 
 def ArrayClearing():
     return 0, 0, 0
 
-def RUN(NumberOfFrames,Lock):
+def RUN(NumberOfFrames,q):
     count = 0
     cap = cv.VideoCapture(0)
     while 1:
@@ -149,9 +145,8 @@ def RUN(NumberOfFrames,Lock):
                 # getting all needed information
                 mean, isnew, msgBlueFFT, msgGreenFFT, msgRedFFT = DataToSend(BlueArray, GreenArray, RedArray, count)
                 # Putting all data in queue
-                Lock.acquire
-                PutAllDataInQueue(Lock, q, BGR, isnew, mean, msgBlueFFT, msgGreenFFT, msgRedFFT)
-                Lock.release
+                PutAllDataInQueue(q, BGR, isnew, mean, msgBlueFFT, msgGreenFFT, msgRedFFT)
+
                 BGR = []
                 count += 1
                 if cv.waitKey(1) & 0xFF == ord('q'):

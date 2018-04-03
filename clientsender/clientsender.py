@@ -3,10 +3,10 @@ import sys
 import time
 import thread
 import ImageProcessing
-import multiprocessing
+import Queue
 
 # Put your IP and port here
-q = multiprocessing.Queue()
+q = Queue.Queue()
 TCP_IP = '127.0.0.1'
 TCP_PORT = 3001
 buffersize = 256
@@ -16,20 +16,25 @@ Lock = thread.allocate_lock()
 # Set amount of time between sending data in s
 timeBetweenTransmission = 2
 
-def getData(queue,data):
-    while not queue.empty():
-        data.append(queue.get())
-        queue.task_done()
-    # Send data via TCP
 
-def sendData(t):
+def getData(queue):
+        temp = []
+        temp.append(queue.get)
+        queue.task_done()
+        return temp
+
+
+    # Send data via TCP
+def sendData(t, data):
     gettime = t
     print('Started sending messages')
     while True:
-        getData(q, Data)
-        if not Data:
-            continue
+        if q.empty is 1:
+            time.sleep(5)
         else:
+            while not q.empty():
+                Data = getData(q)
+        if len(Data) is 11:
             s.send(Data)
             time.sleep(gettime)
             try:
@@ -55,6 +60,8 @@ def sendData(t):
                 sys.exit(0)
             break
 
+        else:
+            continue
 try:
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -62,8 +69,8 @@ try:
     s.connect((TCP_IP, TCP_PORT))
     print 'connecting to %s' % (TCP_IP)
 
-    thread.start_new_thread(sendData, (timeBetweenTransmission,))
-    thread.start_new_thread(ImageProcessing.RUN(NumberOfFrames, Lock))
+    thread.start_new_thread(sendData, (timeBetweenTransmission, Data))
+    thread.start_new_thread(ImageProcessing.RUN(NumberOfFrames, q))
 
 
 
