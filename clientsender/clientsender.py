@@ -24,7 +24,6 @@ def getData(queue,data):
 
 def sendData(t):
     gettime = t
-
     print('Started sending messages')
     while True:
         getData(q, Data)

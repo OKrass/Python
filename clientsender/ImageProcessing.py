@@ -18,6 +18,7 @@ def ArrayAppend(ColorFrame, ChannelName):
     ChannelName.append(l)
     return ChannelName
 
+
 # Splitting image and using ArrayAppend to add mean value ro
 
 
