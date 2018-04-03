@@ -6,7 +6,6 @@ Blue = []
 Green = []
 Red = []
 
-
 # Set Number of Frames between 50 - 350
 NumberOfFrames = 20
 

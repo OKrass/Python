@@ -5,6 +5,7 @@ import thread
 import ImageProcessing
 import Queue
 
+
 # Put your IP and port here
 q = Queue.Queue()
 TCP_IP = '127.0.0.1'
