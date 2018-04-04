@@ -11,12 +11,12 @@ q = Queue.Queue()
 TCP_IP = '127.0.0.1'
 TCP_PORT = 3001
 buffersize = 256
-Data = []
+
 NumberOfFrames = 50
 Lock = thread.allocate_lock()
 # Set amount of time between sending data in s
 timeBetweenTransmission = 2
-
+Data = []
 
 def getData(queue):
         temp = []
@@ -35,7 +35,7 @@ def sendData(t, data):
         else:
             while not q.empty():
                 Data = getData(q)
-        if len(Data) is 11:
+        if len(data) is 11:
             s.send(Data)
             time.sleep(gettime)
             try:
