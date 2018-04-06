@@ -20,15 +20,13 @@ timeBetweenTransmission = 2
 # Set Number of Frames between 50 - 350
 NumberOfFrames = 20
 
-# Getting mean of an image and later adding it to an List
 
 
 
 
     # Send data via TCP
 
-
-def sendData(t, Data, q, socket):
+def sendData(t, q, socket):
     gettime = t
   #  print('Started sending messages')
 
@@ -47,7 +45,7 @@ def sendData(t, Data, q, socket):
         try:
             answer = socket.recv(buffersize)
             time.sleep(gettime)
-            # Checking if sent information is same as received
+            # Checking if sent information is same as received (temporary disabled)
             '''
             if (answer != datatosend):
 
@@ -199,7 +197,7 @@ def RUN(NumberofFrames,q,IP,Port,timebtwtrans):
                 # Putting all data in queue
                 PutAllDataInQueue(q, BGR, isnew, mean, msgBlueFFT, msgGreenFFT, msgRedFFT)
                 # Data format: mean of 1 image (b,g,r) ; isNew ; Mean of n images (b,g,r) ; BFFT ; GFFT ; RFFT ;
-                sendData(timebtwtrans, Data1, q, s)
+                sendData(timebtwtrans, q, s)
                 BGR = []
                 count += 1
                 if cv.waitKey(1) & 0xFF == ord('q'):
