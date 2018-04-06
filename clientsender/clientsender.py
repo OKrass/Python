@@ -14,46 +14,41 @@ buffersize = 256
 Data1 = []
 NumberOfFrames = 50
 # Set amount of time between sending data in s
-timeBetweenTransmission = 2
+timeBetweenTransmission = 0.01
+# For 0.01 s program sends current values
 
-
-def getData(queue):
-        temp = []
-        temp.append(queue.get)
-        queue.task_done()
-        return temp
 
 
     # Send data via TCP
-def sendData(t, data, q, socket):
+def sendData(t, q, socket):
     gettime = t
     print('Started sending messages')
     while True:
-        '''
+        Data = []
         if q.empty is 1:
             time.sleep(5)
         else:
             while not q.empty():
-                Data = getData(q)
-                '''
-        Data = [1,2,3,4,5,6,7,8,9,10,11]
-        if len(Data) is 11:
+                Data.append(q.get())
+                Data.append(';\n ')
+
+        if len(Data) is 22:
             datatosend = ''.join(str(x) for x in Data)
             socket.send(datatosend)
             time.sleep(gettime)
             try:
                 answer = socket.recv(buffersize)
+                '''
                 # Checking if sent information is same as received
                 if (answer != datatosend):
                     print('messages do not match')
                     socket.close()
                     sys.exit('error')
-
+                '''
             except Exception:
                 print('something went wrong')
                 socket.close()
-            #Getting new information
-            #informationToSent = getData()
+
 
 
             if Data:
@@ -73,7 +68,7 @@ try:
     s.connect((TCP_IP, TCP_PORT))
     print 'connecting to %s' % (TCP_IP)
 
-    a = thread.start_new_thread(sendData, (timeBetweenTransmission, Data1, q, s))
+    a = thread.start_new_thread(sendData, (timeBetweenTransmission, q, s))
     b = thread.start_new_thread(ImageProcessing.RUN(NumberOfFrames, q))
 
 

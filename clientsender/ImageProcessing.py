@@ -92,7 +92,7 @@ def PutAllDataInQueue(Queue,Color, New, Mean, BFFT, GFFT, RFFT):
     Queue.put(BFFT)
     Queue.put(GFFT)
     Queue.put(RFFT)
-    print Queue.qsize()
+
 
 def ArrayClearing():
     return 0, 0, 0
