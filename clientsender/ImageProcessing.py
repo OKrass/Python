@@ -1,7 +1,7 @@
 import numpy as np
 import cv2 as cv
 import Queue
-import thread
+import threading
 Blue = []
 Green = []
 Red = []
@@ -98,6 +98,7 @@ def ArrayClearing():
     return 0, 0, 0
 
 def RUN(NumberOfFrames,q):
+
     count = 0
     cap = cv.VideoCapture(0)
     while 1:
