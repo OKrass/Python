@@ -5,7 +5,6 @@ import thread
 import ImageProcessing
 import Queue
 
-
 # Put your IP and port here
 q = Queue.Queue()
 TCP_IP = '127.0.0.1'
@@ -18,7 +17,10 @@ timeBetweenTransmission = 0.01
 # For 0.01 s program sends current values
 
 
-
+# We are sending  ( mean of current frame(b,g,r),Isnew (0 or 1), mean of 3 channels(r,g,b) from n frames, mean of mean of (r,g,b) from n frames, FFT of 3 channels from n frames ) = 3 + 1 + 3 + 1 + 3 = 11 values.
+# Also splitting them by \n at the end of each value
+# For frames 1-9 Isnew = 0 and all values on the right from Isnew = 0
+# For every 10 frame Isnew = 1 and all values on the right != 0
     # Send data via TCP
 def sendData(t, q, socket):
     gettime = t
