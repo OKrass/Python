@@ -36,7 +36,15 @@ def GetArrayMean(ColorArray):
 
 
 def FFT(ChannelArray):
-    return np.fft.fft(ChannelArray)
+    a = np.fft.fft(ChannelArray)
+    b = np.absolute(a)
+    temp = []
+    for i in range(0, len(b)):
+        a = b[i]
+        k = '{:.2f}'.format(a)
+        z = float(k)
+        temp.append(z)
+    return temp
 
     # FFT dor all 3 channels
 def ChannelFFT(BlueArray, GreenArray, RedArray):

@@ -10,9 +10,9 @@ import Queue
 q = Queue.Queue()
 TCP_IP = '127.0.0.1'
 TCP_PORT = 3001
-buffersize = 256
+buffersize = 8192
 Data1 = []
-NumberOfFrames = 50
+NumberOfFrames = 300
 # Set amount of time between sending data in s
 timeBetweenTransmission = 0.01
 # For 0.01 s program sends current values
@@ -22,33 +22,35 @@ timeBetweenTransmission = 0.01
     # Send data via TCP
 def sendData(t, q, socket):
     gettime = t
+    count = 0
     print('Started sending messages')
     while True:
         Data = []
         if q.empty is 1:
             time.sleep(5)
         else:
-            while not q.empty():
+            while not len(Data) is 22:
                 Data.append(q.get())
                 Data.append(';\n ')
 
-        if len(Data) is 22:
             datatosend = ''.join(str(x) for x in Data)
             socket.send(datatosend)
-            time.sleep(gettime)
             try:
                 answer = socket.recv(buffersize)
-                '''
+                if len(answer) >= 8192:
+                    print ('Too many digits')
+                    break
+                else:
                 # Checking if sent information is same as received
-                if (answer != datatosend):
-                    print('messages do not match')
-                    socket.close()
-                    sys.exit('error')
-                '''
+                    if (answer != datatosend):
+                        print('messages do not match')
+                        socket.close()
+                        sys.exit('error')
+                time.sleep(gettime)
+
             except Exception:
                 print('something went wrong')
                 socket.close()
-
 
 
             if Data:
@@ -59,8 +61,6 @@ def sendData(t, q, socket):
                 sys.exit(0)
             break
 
-        else:
-            continue
 try:
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
