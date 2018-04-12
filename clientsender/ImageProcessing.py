@@ -64,7 +64,7 @@ def DataToSend(BlueArray, GreenArray, RedArray, i):
     MeanOfBlue = GetArrayMean(BlueArray)
     MeanOfGreen = GetArrayMean(GreenArray)
     MeanOfRed = GetArrayMean(RedArray)
-    # For i = 9 we are sending all information ( mean of 3 channels(r,g,b), mean of mean of (r,g,b), FFT of 3 channels )
+
     if check == 9:
         BlueFFT, GreenFFT, RedFFT = ChannelFFT(BlueArray, GreenArray, RedArray)
         temp1 = [MeanOfBlue, MeanOfGreen, MeanOfRed, Meanof3channels(MeanOfBlue, MeanOfGreen, MeanOfRed)]
@@ -83,9 +83,9 @@ def Meanof3channels(MeanOfblue, MeanOfgreen, MeanOfred):
 
 def PutAllDataInQueue(Queue,Color, New, Mean, BFFT, GFFT, RFFT):
 
-    Queue.put(Color[0])
-    Queue.put(Color[1])
-    Queue.put(Color[2])
+    Queue.put("{:.5f}".format(Color[0]))
+    Queue.put("{:.5f}".format(Color[1]))
+    Queue.put("{:.5f}".format(Color[2]))
     Queue.put(New)
     if not Mean:
         Queue.put(0)
@@ -93,10 +93,10 @@ def PutAllDataInQueue(Queue,Color, New, Mean, BFFT, GFFT, RFFT):
         Queue.put(0)
         Queue.put(0)
     else:
-        Queue.put(Mean[0])
-        Queue.put(Mean[1])
-        Queue.put(Mean[2])
-        Queue.put(Mean[3])
+        Queue.put("{:.5f}".format(Mean[0]))
+        Queue.put("{:.5f}".format(Mean[1]))
+        Queue.put("{:.5f}".format(Mean[2]))
+        Queue.put("{:.5f}".format(Mean[3]))
     Queue.put(BFFT)
     Queue.put(GFFT)
     Queue.put(RFFT)

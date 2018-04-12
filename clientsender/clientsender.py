@@ -58,7 +58,7 @@ def sendData(t, q, socket):
             if Data:
                 continue
             else:
-                print 'no more data to %s\nclosing '%(TCP_IP)
+                print ('no more data to %s\nclosing ')%(TCP_IP)
                 socket.close()
                 sys.exit(0)
             break
@@ -68,7 +68,7 @@ try:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     #COnnecting to server using IP and Port
     s.connect((TCP_IP, TCP_PORT))
-    print 'connecting to %s' % (TCP_IP)
+    print ('connecting to %s') % (TCP_IP)
 
     a = thread.start_new_thread(sendData, (timeBetweenTransmission, q, s))
     b = thread.start_new_thread(ImageProcessing.RUN(NumberOfFrames, q))
